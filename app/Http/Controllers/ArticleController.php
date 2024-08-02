@@ -48,7 +48,20 @@ class ArticleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Modification d'un article
+        $article = Article::find($id);
+
+        if(!article) {
+            return response()->json(['message' => 'article non trouvé!'], 404);
+        }
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'body' => 'required|string'
+        ]);
+
+        $request->update($request->all());
+        return $article;
+
     }
 
     /**
