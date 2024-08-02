@@ -11,7 +11,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        //
+        // Récupération de tous les articles
+        return Article::all();
     }
 
     /**
@@ -19,7 +20,13 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Enregistrement d'un nouvel article
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'body' => 'required|string'
+        ]);
+
+        return Article::create($request->all());
     }
 
     /**
