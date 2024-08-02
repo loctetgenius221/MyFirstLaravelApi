@@ -34,7 +34,13 @@ class ArticleController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // Afficher un article à travers son id
+        $article = Article::find($id);
+
+        if(!article) {
+            return response()->json(['message' => 'Article non trouvé!'], 404);
+        }
+        return $article;
     }
 
     /**
