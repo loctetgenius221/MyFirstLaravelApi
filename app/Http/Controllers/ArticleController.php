@@ -69,6 +69,14 @@ class ArticleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Méthode pour supprimer un article
+        $article = Article::find($id);
+
+        if(!article) {
+            return response()->json(['message' => 'article non trouvé!'], 404);
+        }
+
+        $article->delete();
+        return response()->json(['message' => 'Article supprimé avec succès']);
     }
 }
