@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -37,7 +38,7 @@ class ArticleController extends Controller
         // Afficher un article à travers son id
         $article = Article::find($id);
 
-        if(!article) {
+        if(!$article) {
             return response()->json(['message' => 'Article non trouvé!'], 404);
         }
         return $article;
@@ -51,7 +52,7 @@ class ArticleController extends Controller
         // Modification d'un article
         $article = Article::find($id);
 
-        if(!article) {
+        if(!$article) {
             return response()->json(['message' => 'article non trouvé!'], 404);
         }
         $request->validate([
@@ -59,7 +60,7 @@ class ArticleController extends Controller
             'body' => 'required|string'
         ]);
 
-        $request->update($request->all());
+        $article->update($request->all());
         return $article;
 
     }
@@ -72,7 +73,7 @@ class ArticleController extends Controller
         // Méthode pour supprimer un article
         $article = Article::find($id);
 
-        if(!article) {
+        if(!$article) {
             return response()->json(['message' => 'article non trouvé!'], 404);
         }
 
