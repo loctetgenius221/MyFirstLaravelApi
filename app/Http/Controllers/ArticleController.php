@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -11,7 +12,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        //
+        // Récupération de tous les articles
+        return Article::all();
     }
 
     /**
@@ -19,7 +21,13 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Enregistrement d'un nouvel article
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'body' => 'required|string'
+        ]);
+
+        return Article::create($request->all());
     }
 
     /**
@@ -27,7 +35,13 @@ class ArticleController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // Afficher un article à travers son id
+        $article = Article::find($id);
+
+        if(!$article) {
+            return response()->json(['message' => 'Article non trouvé!'], 404);
+        }
+        return $article;
     }
 
     /**
@@ -35,7 +49,20 @@ class ArticleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Modification d'un article
+        $article = Article::find($id);
+
+        if(!$article) {
+            return response()->json(['message' => 'article non trouvé!'], 404);
+        }
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'body' => 'required|string'
+        ]);
+
+        $article->update($request->all());
+        return $article;
+
     }
 
     /**
@@ -43,6 +70,14 @@ class ArticleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Méthode pour supprimer un article
+        $article = Article::find($id);
+
+        if(!$article) {
+            return response()->json(['message' => 'article non trouvé!'], 404);
+        }
+
+        $article->delete();
+        return response()->json(['message' => 'Article supprimé avec succès']);
     }
 }
